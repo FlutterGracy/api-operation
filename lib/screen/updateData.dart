@@ -46,21 +46,7 @@ class _UpdateDataScreenState extends State<UpdateDataScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                          snapshot.data!.data!.user!.profileSummary.toString()),
                       Text(snapshot.data!.data!.user!.fullName.toString()),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      TextField(
-                        controller: _idController,
-                        decoration: InputDecoration(
-                          hintText: 'User Profile Summary',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -83,20 +69,23 @@ class _UpdateDataScreenState extends State<UpdateDataScreen> {
                                 setState(() {
                                   isUpdating = true;
                                 });
-                                if (_nameController.text != '' &&
-                                    _idController.text != '') {
-                                  User dataModel = User(
-                                      fullName: _nameController.text,
-                                      profileSummary: _idController.text);
-                                  User? retrievedUser =
-                                      await _dataServices.updateUserProfile(
-                                          user: dataModel,
-                                          accessToken: token,
-                                          profileSummary: _idController.text);
+                                if (_nameController.text != '') {
+                                  UpdateDataModel dataModel = UpdateDataModel(
+                                    data: Data(
+                                      user: User(
+                                        fullName: _nameController.text,
+                                      ),
+                                    ),
+                                  );
+                                  UpdateDataModel? retrievedUser =
+                                      await _dataServices.updateApiData(
+                                    userInfo: dataModel,
+                                  );
 
                                   if (retrievedUser != null) {
                                     setState(() {
-                                      userInfo = retrievedUser.profileSummary
+                                      userInfo = retrievedUser
+                                          .data!.user!.fullName
                                           .toString();
                                     });
                                     showDialog(
@@ -116,7 +105,7 @@ class _UpdateDataScreenState extends State<UpdateDataScreen> {
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
-                                                  'Name: ${retrievedUser.fullName.toString()}',
+                                                  'Name: ${retrievedUser.data!.user!.fullName.toString()}',
                                                 ),
                                               ],
                                             ),
