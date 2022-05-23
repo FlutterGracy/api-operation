@@ -46,14 +46,14 @@ class _UpdateDataScreenState extends State<UpdateDataScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(snapshot.data!.data!.user!.fullName.toString()),
+                      Text(snapshot.data!.data!.user!.firstName.toString()),
                       const SizedBox(
                         height: 10,
                       ),
                       TextField(
                         controller: _nameController,
                         decoration: InputDecoration(
-                          hintText: 'User Name',
+                          hintText: 'first Name',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -73,46 +73,48 @@ class _UpdateDataScreenState extends State<UpdateDataScreen> {
                                   UpdateDataModel dataModel = UpdateDataModel(
                                     data: Data(
                                       user: User(
-                                        fullName: _nameController.text,
+                                        firstName: _nameController.text,
                                       ),
                                     ),
                                   );
                                   UpdateDataModel? retrievedUser =
                                       await _dataServices.updateApiData(
-                                    userInfo: dataModel,
+                                    userInfo: dataModel
                                   );
 
                                   if (retrievedUser != null) {
                                     setState(() {
                                       userInfo = retrievedUser
-                                          .data!.user!.fullName
+                                          .data!.user!.firstName
                                           .toString();
+                                      print(retrievedUser.data!.user!.firstName
+                                          .toString());
                                     });
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Dialog(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(
-                                                  'Name: ${retrievedUser.data!.user!.fullName.toString()}',
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (context) => Dialog(
+                                    //     child: Container(
+                                    //       decoration: BoxDecoration(
+                                    //         color: Colors.white,
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(20),
+                                    //       ),
+                                    //       child: Padding(
+                                    //         padding: const EdgeInsets.all(8.0),
+                                    //         child: Column(
+                                    //           crossAxisAlignment:
+                                    //               CrossAxisAlignment.start,
+                                    //           mainAxisSize: MainAxisSize.min,
+                                    //           children: [
+                                    //             Text(
+                                    //               'Name: ${retrievedUser.data!.user!.fullName.toString()}',
+                                    //             ),
+                                    //           ],
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // );
                                   }
                                 }
 

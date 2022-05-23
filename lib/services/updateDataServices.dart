@@ -43,16 +43,17 @@ class UpdateDataServices {
         'https://api.holedo.com/rest/users/me',
         queryParameters: {'apikey': 'test'},
         options: Options(
-          headers: {'AuthApi': 'Bearer $token}'},
+          headers: {'AuthApi': 'Bearer $token'},
         ),
         data: userInfo.toJson(),
-
       );
-      print('status::-${response.statusCode}');
-      print('status::-${response.data}');
 
+      if (response.statusCode == 200) {
+        print('status code ::-${response.statusCode}');
+        print('updated code ::-${response.data}');
 
-      return UpdateDataModel.fromJson(response.data);
+        return UpdateDataModel.fromJson(response.data);
+      }
     } catch (e) {
       print('Error updating user: $e');
     }
