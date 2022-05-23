@@ -36,22 +36,45 @@ class UpdateDataServices {
     }
   }
 
-  Future<User?> updateApiData(
-      {required User userInfo}) async {
+  // Future<User?> updateApiData({required User userInfo}) async {
+  //   try {
+  //     Response response = await _dio.put(
+  //       'https://api.holedo.com/rest/users/me',
+  //       queryParameters: {'apikey': 'test'},
+  //       options: Options(
+  //         headers: {'AuthApi': 'Bearer $token}'},
+  //       ),
+  //       data: userInfo.toJson(),
+  //     );
+  //     print('status::-${response.statusCode}');
+  //
+  //     return User.fromJson(response.data);
+  //   } catch (e) {
+  //     print('Error updating user: $e');
+  //   }
+  // }
+
+  Future<User?> updateUserProfile({
+    required String accessToken,
+    required User user,
+    required String profileSummary,
+  }) async {
+    User? updatedUser;
     try {
-      Response response = await _dio.put(
-        'https://api.holedo.com/rest/users/me',
+      Response response = await _dio.post(
+        'https://api.holedo.com/rest/users/update',
+        data: user.toJson(),
         queryParameters: {'apikey': 'test'},
         options: Options(
-          headers: {'AuthApi': 'Bearer $token}'},
+          headers: {'AuthApi': 'Bearer $accessToken'},
         ),
-        data: userInfo.toJson(),
       );
-      print('status::-${response.statusCode}');
 
-      return User.fromJson(response.data);
+      print('User updated:: ${response.data}');
+      updatedUser = User.fromJson(response.data);
     } catch (e) {
       print('Error updating user: $e');
     }
+    return updatedUser;
   }
 }
